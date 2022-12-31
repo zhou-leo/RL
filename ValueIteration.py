@@ -31,8 +31,10 @@ def value_iteration(env, theta=0.0001, discount_factor=1.0):
         """
         A = np.zeros(env.nA)
         for a in range(env.nA):
-            for prob, next_state, reward, done in env.P[state][a]:
-                A[a] += prob * (reward + discount_factor * V[next_state])
+            # for prob, next_state, reward, done in env.P[state][a]:
+            #     A[a] += prob * (reward + discount_factor * V[next_state])
+            [prob, next_state, reward, done] = env.P[state][a][0]
+            A[a] += prob * (reward + discount_factor * V[next_state])
         return A
     
     V = np.zeros(env.nS)

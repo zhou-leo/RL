@@ -51,10 +51,11 @@ class GridworldEnv(discrete.DiscreteEnv):
 
             P[s] = {a : [] for a in range(nA)}
 
+            # Set the start and end locations to Ture
             is_done = lambda s: s == 0 or s == (nS - 1)
             reward = 0.0 if is_done(s) else -1.0
 
-            # We're stuck in a terminal state
+                # We're stuck in a terminal state
             if is_done(s):
                 P[s][UP] = [(1.0, s, reward, True)]
                 P[s][RIGHT] = [(1.0, s, reward, True)]
@@ -82,33 +83,33 @@ class GridworldEnv(discrete.DiscreteEnv):
 
         super(GridworldEnv, self).__init__(nS, nA, P, isd)
 
-    def _render(self, mode='human', close=False):
-        if close:
-            return
-
-        outfile = StringIO() if mode == 'ansi' else sys.stdout
-
-        grid = np.arange(self.nS).reshape(self.shape)
-        it = np.nditer(grid, flags=['multi_index'])
-        while not it.finished:
-            s = it.iterindex
-            y, x = it.multi_index
-
-            if self.s == s:
-                output = " x "
-            elif s == 0 or s == self.nS - 1:
-                output = " T "
-            else:
-                output = " o "
-
-            if x == 0:
-                output = output.lstrip() 
-            if x == self.shape[1] - 1:
-                output = output.rstrip()
-
-            outfile.write(output)
-
-            if x == self.shape[1] - 1:
-                outfile.write("\n")
-
-            it.iternext()
+    # def _render(self, mode='human', close=False):
+    #     if close:
+    #         return
+    #
+    #     outfile = StringIO() if mode == 'ansi' else sys.stdout
+    #
+    #     grid = np.arange(self.nS).reshape(self.shape)
+    #     it = np.nditer(grid, flags=['multi_index'])
+    #     while not it.finished:
+    #         s = it.iterindex
+    #         y, x = it.multi_index
+    #
+    #         if self.s == s:
+    #             output = " x "
+    #         elif s == 0 or s == self.nS - 1:
+    #             output = " T "
+    #         else:
+    #             output = " o "
+    #
+    #         if x == 0:
+    #             output = output.lstrip()
+    #         if x == self.shape[1] - 1:
+    #             output = output.rstrip()
+    #
+    #         outfile.write(output)
+    #
+    #         if x == self.shape[1] - 1:
+    #             outfile.write("\n")
+    #
+    #         it.iternext()
