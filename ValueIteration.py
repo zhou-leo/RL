@@ -45,11 +45,16 @@ def value_iteration(env, theta=0.0001, discount_factor=1.0):
         for s in range(env.nS):
             # Do a one-step lookahead to find the best action
             A = one_step_lookahead(s, V)
+
+            print('s=', s)
+            print(A)
             best_action_value = np.max(A)
             # Calculate delta across all states seen so far
             delta = max(delta, np.abs(best_action_value - V[s]))
             # Update the value function
-            V[s] = best_action_value        
+            V[s] = best_action_value
+            print('s=', s)
+            print(V)
         # Check if we can stop 
         if delta < theta:
             break

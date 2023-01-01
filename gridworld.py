@@ -46,6 +46,16 @@ class GridworldEnv(discrete.DiscreteEnv):
         it = np.nditer(grid, flags=['multi_index'])
 
         while not it.finished:
+            '''
+            生成概率分布字典P Generate a probability distribution dictionary P:
+            P = {Sn: {An: [(prob, next_state, reward, done)] }}
+            Sn: 当前状态ID0-15 Current status 0-15
+            An: 动作 0-3 对应上下左右 Corresponds to Up, Down, Left, Right
+            prob: Sn状态下An动作的概率 The probability of an action in the Sn state
+            next_state: 执行An动作后的状态ID The status ID after executing the An action
+            reward: 当前状态奖励值 The reward value of current status
+            done: Sn是否为结束 Whether Sn is the end
+            '''
             s = it.iterindex
             y, x = it.multi_index
 
@@ -53,6 +63,7 @@ class GridworldEnv(discrete.DiscreteEnv):
 
             # Set the start and end locations to Ture
             is_done = lambda s: s == 0 or s == (nS - 1)
+            # is_done = lambda s: s == 40  # or s == 50
             reward = 0.0 if is_done(s) else -1.0
 
                 # We're stuck in a terminal state
@@ -63,9 +74,9 @@ class GridworldEnv(discrete.DiscreteEnv):
                 P[s][LEFT] = [(1.0, s, reward, True)]
             # Not a terminal state
             else:
-                ns_up = s if y == 0 else s - MAX_X
+                ns_up = s if (y == 0 or s == 5 or s == 6) else s - MAX_X
                 ns_right = s if x == (MAX_X - 1) else s + 1
-                ns_down = s if y == (MAX_Y - 1) else s + MAX_X
+                ns_down = s if (y == (MAX_Y - 1) or s == 1 or s == 2) else s + MAX_X
                 ns_left = s if x == 0 else s - 1
                 P[s][UP] = [(1.0, ns_up, reward, is_done(ns_up))]
                 P[s][RIGHT] = [(1.0, ns_right, reward, is_done(ns_right))]
